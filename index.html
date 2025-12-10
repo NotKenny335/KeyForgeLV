@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KeyForge Labs — Premium Klaviatūras</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0b0b;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: #101010;
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #00aaff;
+      box-shadow: 0 0 15px #00aaff55;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: 1px;
+      color: #00aaff;
+      text-shadow: 0 0 5px #00aaff, 0 0 10px #00aaff, 0 0 20px #00aaff;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 70px 20px;
+      background: linear-gradient(#0b0b0b, #161616);
+    }
+
+    .hero h2 {
+      font-size: 44px;
+      background: linear-gradient(90deg, #00aaff, #00ccff, #00aaff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-move 5s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes gradient-move {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .hero p {
+      color: #cfcfcf;
+      font-size: 18px;
+    }
+
+    /* Products */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      padding: 40px;
+    }
+
+    .product {
+      background: #121212;
+      padding: 20px;
+      border: 1px solid #00aaff;
+      border-radius: 12px;
+      text-align: center;
+      transition: 0.3s;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00aaff33;
+    }
+
+    .product:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 25px #00aaffaa;
+    }
+
+    .product img {
+      width: 100%;
+      border-radius: 10px;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .price {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #00ccff;
+    }
+
+    /* Modal */
+    .modal-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+    }
+
+    .modal {
+      background: #101010;
+      padding: 25px;
+      width: 92%;
+      max-width: 520px;
+      border: 1px solid #00aaff;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 20px #00aaff88;
+    }
+
+    .modal img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .spec-list {
+      text-align: left;
+      color: #ccc;
+      margin-top: 10px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .close-btn {
+      margin-top: 18px;
+      padding: 10px 20px;
+      background: #00aaff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: black;
+      font-size: 15px;
+    }
+
+    /* Info cards as windows */
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin: 40px 20px;
+    }
+
+    .info-card {
+      background: #121212;
+      border: 1px solid #00aaff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 8px #00aaff33;
+      transition: transform 0.3s, box-shadow 0.3s, opacity 0.6s;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .info-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .info-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #00aaffaa;
+    }
+
+    .info-card h3 {
+      color: #00aaff;
+      margin-bottom: 10px;
+    }
+
+    .info-card p, .info-card ul {
+      color: #ccc;
+      font-size: 14px;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 35px;
+      background: #101010;
+      text-align: center;
+      border-top: 2px solid #00aaff;
+      box-shadow: 0 0 15px #00aaff44;
+    }
+
+    footer p {
+      margin: 6px 0;
+      color: #ccc;
+    }
+
+    /* Snow */
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      color: white;
+      font-size: 12px;
+      user-select: none;
+      pointer-events: none;
+      animation: fall linear forwards;
+      z-index: 0;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0.2;
+      }
+    }
+
+    @media (max-width:800px){
+      .info-cards {
+        grid-template-columns: 1fr;
+      }
+      .hero h2{font-size:28px}
+      .product img{height:160px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>KeyForge Labs</h1>
+  </header>
+
+  <section class="hero">
+    <h2>PREMIUM SPĒĻU KLAVIATŪRAS</h2>
+    <p>Ziemassvētku izpārdošana • Atlaides līdz 30%</p>
+  </section>
+
+  <!-- Products -->
+  <section class="products">
+    <div class="product" onclick="openModal('KeyForge Blizzard Pro','199€','images/blizzard.jpg', blizzardSpecs)">
+      <img src="images/blizzard.jpg" alt="Blizzard Pro" />
+      <h3>KeyForge Blizzard Pro</h3>
+      <p class="price">199€</p>
+    </div>
+
+    <div class="product" onclick="openModal('KeyForge Frostbite RGB','149€','images/frostbite.png', frostSpecs)">
+      <img src="images/frostbite.png" alt="Frostbite RGB" />
+      <h3>KeyForge Frostbite RGB</h3>
+      <p class="price">149€</p>
+    </div>
+
+    <div class="product" onclick="openModal('KeyForge Snowstorm Lite','89€','images/snowstorm.jpg', snowSpecs)">
+      <img src="images/snowstorm.jpg" alt="Snowstorm Lite" />
+      <h3>KeyForge Snowstorm Lite</h3>
+      <p class="price">89€</p>
+    </div>
+  </section>
+
+  <!-- Info cards -->
+  <section class="info-cards">
+    <div class="info-card"><h3>Pakalpojumi / Produkti / Pieredzes</h3>
+      <ul>
+        <li>Pielāgojamas tastatūras (custom builds)</li>
+        <li>Profesionālas spēļu tastatūras</li>
+        <li>Klusas biroja tastatūras ar premium slēdžiem</li>
+        <li>Tastatūru modifikāciju pakalpojumi (smērvielas, stabilizatori, skaņas uzlabošana)</li>
+        <li>Atsevišķas detaļas: keycaps, slēdži, kabeļi</li>
+      </ul>
+    </div>
+    <div class="info-card"><h3>Unikalitāte</h3>
+      <p>KeyForge Labs piedāvā pilnībā pielāgojamas tastatūras — klients pats izvēlas korpusu, slēdžus, keycap materiālu un pat tastatūras skaņas profilu. Mēs izmantojam manuālu montāžu un premium komponentes, kas padara katru tastatūri unikālu un ilgmūžīgu.</p>
+    </div>
+    <div class="info-card"><h3>Produktu / pakalpojumu cena</h3>
+      <ul>
+        <li>Premium custom builds: 250–450 € (atkarīgs no materiāliem un uzlabojumiem)</li>
+      </ul>
+    </div>
+    <div class="info-card"><h3>Klienti un mērķauditorija</h3>
+      <ul>
+        <li>Gamers</li>
+        <li>Programmētāji un IT speciālisti</li>
+        <li>Rakstnieki un studenti</li>
+        <li>Ikviens, kas meklē ērtu, skaistu un uzticamu tastatūri ilgtermiņam</li>
+      </ul>
+    </div>
+    <div class="info-card"><h3>Produkta / pakalpojuma reklāma</h3>
+      <ul>
+        <li>Instagram un TikTok (tastatūru skaņas video, montāžas process)</li>
+        <li>YouTube (apskati un “build logs”)</li>
+        <li>Discord community tastatūru entuziastiem</li>
+        <li>Sadarbība ar geimeru un tehnoloģiju influenceru kanāliem</li>
+      </ul>
+    </div>
+    <div class="info-card"><h3>Kā uzņēmums izplata / pārdod produktus</h3>
+      <ul>
+        <li>Pasūtījumi klātienē — nepieciešams ierasties un personīgi saņemt produktu</li>
+        <li>Pasūtījumi caur mājaslapu ar apstiprinājumu uz e‑pastu — prece tiks sagatavota un apstiprinājums nosūtīts uz e‑pastu</li>
+      </ul>
+    </div>
+    <div class="info-card"><h3>Uzņēmuma komanda</h3>
+      <ul>
+        <li>2 mehānisko tastatūru montāžas speciālisti</li>
+        <li>1 dizainers (keycaps un korpusi)</li>
+        <li>1 elektronikas inženieris</li>
+        <li>1 mārketinga speciālists</li>
+        <li>1 klientu apkalpošanas menedžeris</li>
+      </ul>
+    </div>
+    <div class="info-card"><h3>Nozīmīgākais sasniegums</h3>
+      <p>Mēs izstrādājām SilentForge™ slēdžus — īpaši klusus, bet patīkami taktilus mehāniskos slēdžus, kurus iecienījuši gan geimeri, gan biroju darbinieki. Šie slēdži ir kļuvuši par mūsu atpazīstamības zīmi.</p>
+    </div>
+  </section>
+
+  <div class="modal-bg" id="modalBg">
+    <div class="modal" id="modalBox">
+      <img id="modalImg" src="" alt="Produktu bilde"/>
+      <h3 id="modalTitle"></h3>
+      <p id="modalPrice" style="color:#00ccff; font-size:18px; font-weight:bold;"></p>
+      <div class="spec-list" id="modalSpecs"></div>
+      <button class="close-btn" id="closeBtn">Aizvērt</button>
+    </div>
+  </div>
+
+  <footer>
+    <p><b>Adrese:</b> Rīga, Ulbrokas iela 3</p>
+    <p><b>Uzņēmuma numurs:</b> 40234567891</p>
+    <p><b>E‑pasts:</b> support@keyforge.lv</p>
+    <p>Instagram • TikTok • YouTube</p>
+  </footer>
+
+  <script>
+    const blizzardSpecs = `
+      <b>Tehniskā specifikācija:</b><br>
+      • Izmērs: 45 cm (TKL)<br>
+      • Svars: 950 g<br>
+      • RGB: Balti / ledus zili akcenti (programmējami)<br>
+      • Slēdži: Kailh Arctic Pro (mehāniski)<br>
+      • Keycaps: Doubleshot PBT<br>
+      • Materiāls: Alumīnija rāmis<br>
+      • Savienojums: USB‑C (noņemams kabelis)<br>
+      • Papildu: Skaņas izolācija, programmējamas makro pogas
+    `;
+    const frostSpecs = `
+      <b>Tehniskā specifikācija:</b><br>
+      • Izmērs: 42 cm (75%)<br>
+      • Svars: 820 g<br>
+      • RGB: Pilns spektrs (per‑key)<br>
+      • Slēdži: Gateron Silent (klusie)<br>
+      • Keycaps: ABS with textured finish<br>
+      • Materiāls: ABS + metāla plāksne<br>
+      • Savienojums: USB‑C<br>
+      • Funkcijas: Hot‑swap, pogu apgaismojuma profili
+    `;
+    const snowSpecs = `
+      <b>Tehniskā specifikācija:</b><br>
+      • Izmērs: 38 cm (60%)<br>
+      • Svars: 600 g<br>
+      • RGB: Nav (vienkārša balta LED līnija)<br>
+      • Slēdži: Linear low‑profile<br>
+      • Keycaps: Slim doubleshot<br>
+      • Materiāls: Viegls ABS korpuss<br>
+      • Savienojums: USB‑C / Bluetooth<br>
+      • Funkcijas: Liels akumulatora darbības laiks (bezvadu modelis)
+    `;
+
+    function openModal(title, price, imgSrc, specsHtml) {
+      document.getElementById('modalImg').src = imgSrc || '';
+      document.getElementById('modalTitle').textContent = title || '';
+      document.getElementById('modalPrice').textContent = price || '';
+      document.getElementById('modalSpecs').innerHTML = specsHtml || '';
+      document.getElementById('modalBg').style.display = 'flex';
+      document.getElementById('closeBtn').focus();
+    }
+    function closeModal() { document.getElementById('modalBg').style.display = 'none'; }
+    document.getElementById('modalBg').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+    document.getElementById('closeBtn').addEventListener('click', closeModal);
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+    function createSnowflake() {
+      const snow = document.createElement('div');
+      snow.classList.add('snowflake');
+      snow.textContent = '❄';
+      snow.style.left = Math.random() * 100 + 'vw';
+      snow.style.animationDuration = 4 + Math.random()*6 + 's';
+      snow.style.fontSize = 10 + Math.random()*10 + 'px';
+      document.body.appendChild(snow);
+      setTimeout(()=>snow.remove(), 10000);
+    }
+    setInterval(createSnowflake, 150);
+
+    const cards = document.querySelectorAll('.info-card');
+    function showCardsOnScroll() {
+      const triggerBottom = window.innerHeight * 0.85;
+      cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        if(cardTop < triggerBottom){
+          card.classList.add('visible');
+        }
+      });
+    }
+    window.addEventListener('scroll', showCardsOnScroll);
+    showCardsOnScroll();
+  </script>
+</body>
+</html>
